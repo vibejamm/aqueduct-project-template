@@ -1,0 +1,47 @@
+# Dependency directories
+node_modules/
+*.local
+
+# Environment files (do not commit secrets)
+.env
+.env.*
+
+# Secret/key files (never commit)
+key.json
+service-account.json
+service_account.json
+firebase-adminsdk.json
+google-credentials.json
+credentials*.json
+
+# Local install/debug artifacts
+install_error.txt
+eresolve-report.txt
+npm-debug.log
+lint_output.txt
+typecheck_output.txt
+.features-gen/
+reports/
+
+# Firebase debug logs
+firebase-debug.log
+firebase-debug.*.log
+*.log
+
+# Build outputs
+dist/
+build/
+.next/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Token files
+.tokens/
