@@ -1,0 +1,71 @@
+# AI Agent Rules & SOPs
+
+## 0. Context & Persona
+- **Self-Awareness:** Operate according to your current role and capabilities
+- Reference `docs/AGENT_RULES.md` for operational guidelines
+
+## 1. Documentation First
+- **Always** update `docs/APPLICATION_CATALOG.md` when completing a feature or changing functionality.
+- The APPLICATION_CATALOG is the **source of truth** for all component behavior, page flows, hooks, and backend mappings.
+- Code changes must be reflected in the documentation immediately.
+- **Catalog Sync:**
+  - Add `@catalog` tags in component headers
+  - Daily sync script maintains APPLICATION_CATALOG.md and backlinks automatically
+  - No `file:///` URI requirements; links are maintained by automation
+- Also update `docs/REQUIREMENTS_REGISTRY.md` for requirement traceability.
+
+## 2. Test Integrity
+- Run `npm run test:coverage:update` after adding new components or features.
+- Prefer `.feature` files for user workflows; not required for every component.
+
+## 3. Project Structure
+- Use phase taxonomy (Curate/Catalog/Compose/Crosslist) where helpful; not mandatory.
+- Do not create random root directories.
+
+## 4. Testing & Quality
+- **Strict Adherence:** Follow `docs/AGENT_RULES.md` for all test changes and governance validation (5-phase pre-commit pipeline).
+- **Frameworks:**
+    - `npm test` (Playwright) for features.
+    - `npm run test:unit` (Vitest) for components.
+    - `npm run test:functions` (Mocha) for backend.
+- **Mocking:** Use `__itemDetailTestApi` for verifying complex UI states without database writes.
+
+## 5. UI & Design System
+- **Strict Primitives:** You MUST use existing primitives (`BrassTabCard`, `PageShell`, `FilterBar`, etc.) for all UI.
+- **No Custom Designs:** Do NOT build custom containers or one-off layouts. Nothing should be designed from scratch.
+- **vintageLux Aesthetic:** Strict adherence to the `vintageLux` design system is required. Use only defined Tailwind semantic colors (`text-primary-dark`, `bg-paper-white`, `text-gold-accent`). No magic hex codes.
+
+## 6. Architecture & Security
+- **Data Flow:** Respect the 4Cs pipeline (Curate -> Catalog -> Compose -> Crosslist).
+- **Auth:** All sensitive user data interactions must use `useAuth` hooks and check for `isAuthenticated`.
+- **Firebase:** Use the dedicated hooks (`useInventory`, `useDashboardStats`) rather than direct SDK calls in components.
+- **Credentials:** This is an **ADC (Application Default Credentials)** environment. Do NOT request or manually manage API keys/secrets. Rely on the environment's authenticated state.
+- **Model Governance:** MODEL_VERSIONS.ts changes require time-limited approval tokens (`npm run generate:model-token`). See `docs/GOVERNANCE_SYSTEM.md` for details.
+
+## 7. Environment & Shell
+- **PowerShell Only:** This environment uses Windows PowerShell.
+- **Constraint:** Do NOT use `&&` for command chaining. It will fail. Use `;` or separate sequential tool calls.
+
+## 8. AI & Model Versions
+- **Restriction:** NEVER suggest changing LLM model versions without checking the official list.
+- **Source of Truth:** You MUST check [Vertex AI Models](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models) repeatedly.
+- **Date Awareness:** Be aware of today's date. Do not hallucinate that a valid model is invalid or deprecated based on your training data.
+
+## 9. Tenant Isolation & Ecommerce Standards
+- **Multi-Tenancy:** This is a strict multi-tenant system. ALL data access must be scoped to the `currentStore` or tenant ID. Leaking data between tenants is a critical failure.
+- **Privacy First:** PII (Personally Identifiable Information) must never be logged or exposed. Treat all client data as sensitive.
+- **Shopify GraphQL:** Use best practices for Shopify GraphQL (rate limiting, cursors, cost query). Ensure mutations are transactional and robust.
+- **Industry Standards:** Adhere to high-performance ecommerce patterns (fast LCP, accessible checking flows, reliable inventory sync).
+
+## 10. Roadmap & Handoff
+- **Living Document:** `Run Book/ROADMAP.md` is the source of truth.
+- **Update Guidance:** Keep `ROADMAP.md` current alongside significant changes; avoid stale entries.
+- **Commit Notes:** Use concise commit messages that describe product impact; Commit Card templates are optional.
+- **Sync Warning:** If you run `npm run roadmap:sync`, it will overwrite manual changes. Only run it *before* your manual updates.
+
+## 11. Deployment & CI/CD
+- **Strict CI/CD:** This project uses GitHub Actions for deployment.
+- **Primary Method:** `git push origin main` is the standard way to deploy.
+- **Manual Deploys:** avoid manual `firebase deploy` unless specifically debugging deployment infrastructure or handling an emergency.
+- **Pre-Deploy:** Always run full verification (`npm run quality:gate` or individual checks) locally before pushing to main.
+

@@ -1,0 +1,59 @@
+{
+    "folders": [
+        {
+            "name": "curioSync",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "chat.mcp.gallery.enabled": true,
+        "files.autoSave": "afterDelay",
+        "cloudcode.beta.dataprocRegion": "",
+        "terminal.integrated.hideOnLastClosed": false,
+        "markdown.validate.enabled": true,
+        "geminicodeassist.project": "curiosync-2fca0",
+        "[markdown]": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+            "editor.formatOnSave": true,
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "eslint.validate": ["typescript", "typescriptreact"],
+        "typescript.enablePromptUseWorkspaceTsdk": true
+    },
+    "extensions": {
+        "recommendations": [
+            "google.gemini-cli-vscode-ide-companion",
+            "google.geminicodeassist",
+            "github.copilot",
+            "esbenp.prettier-vscode",
+            "dbaeumer.vscode-eslint",
+            "bradlc.vscode-tailwindcss",
+            "ms-playwright.playwright",
+            "ms-vscode.extension-test-runner"
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Firebase Emulators",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder}/node_modules/.bin/firebase",
+                "args": ["emulators:start"],
+                "console": "integratedTerminal"
+            },
+            {
+                "name": "Playwright Tests",
+                "type": "node",
+                "request": "launch",
+                "program": "${workspaceFolder}/node_modules/.bin/playwright",
+                "args": ["test", "--config=${workspaceFolder}/playwright.staging.config.ts"],
+                "console": "integratedTerminal"
+            }
+        ]
+    }
+}
